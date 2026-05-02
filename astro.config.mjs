@@ -20,6 +20,10 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+  redirects: {
+    '/blog/razzmatazz-barcelona': '/blog/bio-dennys',
+    '/en/blog/razzmatazz-barcelona': '/en/blog/bio-dennys'
+  },
   vite: {
     ssr: {
       noExternal: ['gsap'],
