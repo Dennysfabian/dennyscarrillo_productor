@@ -24,5 +24,8 @@ export default defineConfig({
     ssr: {
       noExternal: ['gsap'],
     },
+    optimizeDeps: {
+      include: ['lenis']
+    }
   },
 });

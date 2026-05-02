@@ -79,32 +79,36 @@ const h = t('hero');
 <script>
   import { gsap } from 'gsap';
 
-  const run = () => {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  // Preparamos la animación al instante para evitar el efecto de "doble carga" (FOUC).
+  // Se queda en pausa y aplica los estilos iniciales (opacity 0) ocultos bajo el preloader.
+  const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
-    tl.from('.hero-eyebrow', { y: 20, opacity: 0, duration: 0.8 })
-      .from('.hero-line', {
-        y: 120,
-        opacity: 0,
-        duration: 1.1,
-        stagger: 0.12,
-        skewY: 4,
-      }, '-=0.4')
-      .from('.hero-sub', { y: 24, opacity: 0, duration: 0.9 }, '-=0.6')
-      .from('.hero-cta > *', {
-        y: 20,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.1,
-      }, '-=0.5')
-      .from('.hero-portrait', {
-        opacity: 0,
-        scale: 1.08,
-        x: 80,
-        duration: 1.5,
-        ease: 'power2.out',
-      }, '-=1.6')
-      .from('.hero-scroll', { opacity: 0, y: -10, duration: 0.7 }, '-=0.3');
+  tl.from('.hero-eyebrow', { y: 20, opacity: 0, duration: 0.8 })
+    .from('.hero-line', {
+      y: 120,
+      opacity: 0,
+      duration: 1.1,
+      stagger: 0.12,
+      skewY: 4,
+    }, '-=0.4')
+    .from('.hero-sub', { y: 24, opacity: 0, duration: 0.9 }, '-=0.6')
+    .from('.hero-cta > *', {
+      y: 20,
+      opacity: 0,
+      duration: 0.7,
+      stagger: 0.1,
+    }, '-=0.5')
+    .from('.hero-portrait', {
+      opacity: 0,
+      scale: 1.08,
+      x: 80,
+      duration: 1.5,
+      ease: 'power2.out',
+    }, '-=1.6')
+    .from('.hero-scroll', { opacity: 0, y: -10, duration: 0.7 }, '-=0.3');
+
+  const run = () => {
+    tl.play();
 
     // Subtle parallax on mouse
     const portrait = document.querySelector<HTMLElement>('.hero-portrait');

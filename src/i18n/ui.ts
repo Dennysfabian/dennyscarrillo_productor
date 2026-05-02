@@ -23,7 +23,7 @@ export const ui = {
       booking: 'Booking',
     },
     hero: {
-      eyebrow: 'DJ · Productor · Open Format',
+      eyebrow: 'Locutor · Productor · DJ',
       title_1: 'La música',
       title_2: 'nació',
       title_3: 'libre.',
@@ -36,9 +36,8 @@ export const ui = {
       'La música nació libre',
       'Open Format',
       '100% Latin Soul',
-      'Dennys Carrillo',
       '+10 años en cabina',
-      'Urbano · Tropical · Electrónica',
+      'Urbano · Tropical · Electrónica · Rock · Disco',
     ],
     bio: {
       chip: 'Sobre mí',
@@ -48,7 +47,7 @@ export const ui = {
       p3: 'Más que buscar ser un experto infalible, su objetivo es hacer disfrutar a la gente, guiado siempre por una idea que le acompaña desde niño: "la música nació libre".',
       stats: [
         { k: '+10', v: 'Años en cabina' },
-        { k: '∞', v: 'Géneros latinos' },
+        { k: '∞', v: 'Géneros Musicales' },
         { k: 'Open', v: 'Format' },
         { k: '100%', v: 'Raíz latina' },
       ],
@@ -90,7 +89,7 @@ export const ui = {
       name: 'Nombre',
       email: 'Email',
       date: 'Fecha del evento',
-      message: 'Cuéntame sobre el evento',
+      message: 'Cuéntame sobre el evento y un teléfono de contacto.',
       send: 'Enviar mensaje',
       or: 'o escríbeme a',
       soon: 'Redes sociales próximamente',

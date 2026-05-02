@@ -3,6 +3,7 @@ import { getLangFromUrl, useTranslations, type Lang } from '~/i18n/ui';
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const c = t('contact');
+const today = new Date().toISOString().split('T')[0];
 ---
 
 <section id="contact" class="relative py-20 sm:py-24 md:py-40 overflow-hidden">
@@ -59,18 +60,16 @@ const c = t('contact');
         <form
           id="booking-form"
           class="reveal relative rounded-[2rem] border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8 md:p-12"
-          action="mailto:booking@dennyscarrillo.com"
-          method="post"
-          enctype="text/plain"
-          autocomplete="on"
-          novalidate
+          action="https://api.web3forms.com/submit"
+          method="POST"
         >
+          <input type="hidden" name="access_key" value="73de69aa-af11-4f2a-af29-2e50d88cba51">
+          
+          <input type="hidden" name="redirect" value="https://bookings.dennyscarrillo.com/thank-you">
+
           <div class="absolute -top-px inset-x-10 h-[1px] bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
 
-          <!-- Honeypot anti-bots (hidden from humans) -->
-          <div class="absolute -left-[9999px]" aria-hidden="true">
-            <label>No completar<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
-          </div>
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
           <div class="grid md:grid-cols-2 gap-6">
             <label class="flex flex-col gap-2">
@@ -83,7 +82,7 @@ const c = t('contact');
             </label>
             <label class="flex flex-col gap-2 md:col-span-2">
               <span class="font-mono text-[10px] tracking-[0.3em] uppercase text-white/50">{c.date}</span>
-              <input type="date" name="date" class="field" />
+              <input type="date" name="date" class="field" min={today} />
             </label>
             <label class="flex flex-col gap-2 md:col-span-2">
               <span class="font-mono text-[10px] tracking-[0.3em] uppercase text-white/50">{c.message}</span>
@@ -91,57 +90,64 @@ const c = t('contact');
             </label>
           </div>
           <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
-            <button type="submit" class="btn-primary w-full sm:w-auto" data-cursor="hover">
+            <button type="submit" class="btn-primary w-full sm:w-auto transition-all duration-300 hover:opacity-90 hover:scale-[1.02]" data-cursor="hover">
               {c.send}
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M7 1l6 6-6 6"/></svg>
             </button>
             <p class="text-[11px] text-white/40 leading-relaxed">
-              Se abrirá tu cliente de correo. No enviamos datos a ningún servidor.
+              Tus datos están seguros y serán enviados directamente a nuestro equipo.
             </p>
           </div>
         </form>
       </div>
+      
     </div>
   </div>
 </section>
 
 <script>
-  // Intercepta el submit y construye un mailto seguro con el contenido.
-  // El form usa action="mailto:" como fallback sin JS; aquí lo mejoramos.
-  const form = document.getElementById('booking-form') as HTMLFormElement | null;
+  const form = document.getElementById('booking-form');
+  
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      const fd = new FormData(form);
+      
+      // Feedback visual: Cambiar texto del botón
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerText = "Enviando...";
+      submitBtn.disabled = true;
 
-      // Honeypot: si el bot rellena "website", simulamos éxito y descartamos.
-      if ((fd.get('website') as string | null)?.trim()) {
-        form.reset();
-        return;
+      const formData = new FormData(form);
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: json
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Redirigir a la página de gracias que ya tienes definida
+            window.location.href = "https://bookings.dennyscarrillo.com/thank-you";
+        } else {
+            alert("Algo salió mal. Por favor intenta de nuevo.");
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+      } catch (error) {
+          console.log(error);
+          alert("Error de conexión.");
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
       }
-
-      const name = (fd.get('name') as string | null)?.trim() ?? '';
-      const email = (fd.get('email') as string | null)?.trim() ?? '';
-      const date = (fd.get('date') as string | null)?.trim() ?? '';
-      const message = (fd.get('message') as string | null)?.trim() ?? '';
-
-      if (!name || !email || !message) {
-        form.reportValidity();
-        return;
-      }
-
-      const subject = `Booking — ${name}${date ? ' · ' + date : ''}`;
-      const bodyLines = [
-        `Nombre: ${name}`,
-        `Email: ${email}`,
-        date ? `Fecha del evento: ${date}` : '',
-        '',
-        'Mensaje:',
-        message,
-      ].filter(Boolean).join('\r\n');
-
-      const href = `mailto:booking@dennyscarrillo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines)}`;
-      window.location.href = href;
     });
   }
 </script>
