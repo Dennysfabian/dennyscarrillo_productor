@@ -55,11 +55,11 @@ const today = new Date().toISOString().split('T')[0];
         </div>
       </div>
 
-      <!-- Form -->
-      <div class="lg:col-span-7">
+      <!-- Form Container -->
+      <div class="lg:col-span-7 relative">
         <form
           id="booking-form"
-          class="reveal relative rounded-[2rem] border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8 md:p-12"
+          class="reveal relative rounded-[2rem] border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8 md:p-12 transition-all duration-500"
           action="https://api.web3forms.com/submit"
           method="POST"
         >
@@ -99,6 +99,23 @@ const today = new Date().toISOString().split('T')[0];
             </p>
           </div>
         </form>
+
+        <!-- Success Message -->
+        <div id="success-message" class="hidden flex-col items-center justify-center text-center rounded-[2rem] border border-gold-500/20 bg-white/[0.03] backdrop-blur-xl p-8 md:p-12 md:py-24 transition-opacity duration-500 opacity-0 absolute top-0 left-0 w-full h-full z-10">
+          <div class="w-16 h-16 rounded-full bg-gold-500/10 text-gold-400 flex items-center justify-center mb-6">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h3 class="text-2xl md:text-4xl font-display font-bold gradient-text mb-4">¡Gracias!</h3>
+          <p class="text-white/70 mb-8 max-w-sm text-base md:text-lg">
+            Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo pronto.
+          </p>
+          <a href="/" class="btn-primary transition-all duration-300 hover:scale-[1.02]" data-cursor="hover">
+            Volver al inicio
+          </a>
+        </div>
       </div>
       
     </div>
@@ -107,8 +124,9 @@ const today = new Date().toISOString().split('T')[0];
 
 <script>
   const form = document.getElementById('booking-form');
+  const successMessage = document.getElementById('success-message');
   
-  if (form) {
+  if (form && successMessage) {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       
@@ -135,8 +153,16 @@ const today = new Date().toISOString().split('T')[0];
         const result = await response.json();
         
         if (result.success) {
-            // Redirigir a la página de gracias que ya tienes definida
-            window.location.href = "https://bookings.dennyscarrillo.com/thank-you";
+            // Ocultar formulario suavemente y mostrar mensaje de éxito
+            form.style.opacity = '0';
+            form.style.pointerEvents = 'none';
+            successMessage.classList.remove('hidden');
+            successMessage.classList.add('flex');
+            
+            // Pequeño delay para permitir que la clase 'flex' se aplique antes de la transición
+            setTimeout(() => {
+                successMessage.classList.remove('opacity-0');
+            }, 50);
         } else {
             alert("Algo salió mal. Por favor intenta de nuevo.");
             submitBtn.innerHTML = originalText;
