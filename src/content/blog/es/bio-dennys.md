@@ -2,7 +2,7 @@
 title: "Breve biografia de Dennys Carrillo"
 description: "La música libre"
 date: 2026-02-15
-cover: "/fotos/dennys-carrillo-locutor-estudio.jpg"
+cover: "/fotos/dennys_carrillo_locutor_cabina.png"
 city: "Madrid - Barcelona"
 venue: "Musica y eventos"
 tags:

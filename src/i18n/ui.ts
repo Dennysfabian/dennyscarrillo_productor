@@ -35,9 +35,9 @@ export const ui = {
     marquee: [
       'La música nació libre',
       'Open Format',
-      '100% Latin Soul',
+      'Locutor',
       '+10 años en cabina',
-      'Urbano · Tropical · Electrónica · Rock · Disco',
+      'Rock · Urbano · Tropical · Electrónica · Disco',
     ],
     bio: {
       chip: 'Sobre mí',
@@ -49,7 +49,7 @@ export const ui = {
         { k: '+10', v: 'Años en cabina' },
         { k: '∞', v: 'Géneros Musicales' },
         { k: 'Open', v: 'Format' },
-        { k: '100%', v: 'Raíz latina' },
+        { k: 'Voice', v: 'Over' },
       ],
     },
     music: {
@@ -128,7 +128,7 @@ export const ui = {
     marquee: [
       'Music was born free',
       'Open Format',
-      '100% Latin Soul',
+      'Radio announcer',
       'Dennys Carrillo',
       '+10 years on decks',
       'Urban · Tropical · Electronic',
@@ -143,7 +143,7 @@ export const ui = {
         { k: '+10', v: 'Years on decks' },
         { k: '∞', v: 'Latin genres' },
         { k: 'Open', v: 'Format' },
-        { k: '100%', v: 'Latin root' },
+        { k: 'Voice', v: 'Over' },
       ],
     },
     music: {

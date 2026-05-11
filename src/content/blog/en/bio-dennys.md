@@ -2,7 +2,7 @@
 title: "Brief biography of Dennys Carrillo"
 description: "Music born free"
 date: 2026-02-15
-cover: "/fotos/dennys-carrillo-locutor-estudio.jpg"
+cover: "/fotos/dennys_carrillo_locutor_cabina.png"
 city: "Madrid - Barcelona"
 venue: "Music and events"
 tags:
